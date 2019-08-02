@@ -142,6 +142,18 @@ function cos(degrees) {
     return Math.cos(toRadians(degrees));
 }
 
+function asin(x) {
+    return toDegrees(Math.asin(x));
+}
+
+function acos(x) {
+    return toDegrees(Math.acos(x));
+}
+
+function atan(x) {
+    return toDegrees(Math.atan(x));
+}
+
 class Matrix2D {
     constructor(a11 = 0, a12 = 0, a21 = 0, a22 = 0) {
         this.a11 = a11;
@@ -172,6 +184,124 @@ function toDegrees(radians) {
     return (radians / (2 * Math.PI)) * 360;
 }
 
+class Vector3D {
+    constructor(x = 0, y = 0, z = 0) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    get magnitude() {
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
+    }
+
+    get m() {
+        return this.magnitude;
+    }
+
+    get unitVector() {
+        return this.scale(1 / this.m);
+    }
+
+    get u() {
+        return this.unitVector;
+    }
+
+    add(vector) {
+        var v = new Vector3D();
+
+        v.x = this.x + vector.x;
+        v.y = this.y + vector.y;
+        v.z = this.z + vector.z;
+
+        return v;
+    }
+
+    subtract(vector) {
+        var v = new Vector3D();
+
+        v.x = this.x - vector.x;
+        v.y = this.y - vector.y;
+        v.z = this.z - vector.z;
+
+        return v;
+    }
+
+    times(scalar) {
+        return this.scale(scalar, scalar, scalar);
+    }
+
+    translate(dx = 0, dy = 0, dz = 0) {
+        var v = new Vector3D();
+
+        v.x = this.x + dx;
+        v.y = this.y + dy;
+        v.z = this.z + dz;
+
+        return v;
+    }
+
+    translateX(dx) {
+        return this.translate(dx, 0, 0);
+    }
+
+    translateY(dy) {
+        return this.translate(0, dy, 0);
+    }
+
+    translateZ(dz) {
+        return this.translate(0, 0, dz);
+    }
+
+    scale(sfx = 1, sfy = 1, sfz = 1) {
+        var v = new Vector3D();
+
+        v.x = this.x * sfx;
+        v.y = this.y * sfy;
+        v.z = this.z * sfz;
+
+        return v;
+    }
+
+    scaleX(sfx) {
+        return this.scale(sfx, 1, 1);
+    }
+
+    scaleY(sfy) {
+        return this.scale(1, sfy, 1);
+    }
+
+    scaleZ(sfz) {
+        return this.scale(1, 1, sfz);
+    }
+
+    reflect() {
+        return this.scale(-1, -1, -1);
+    }
+
+    reflectX() {
+        return this.scaleX(-1);
+    }
+
+    reflectY() {
+        return this.scaleY(-1);
+    }
+
+    reflectZ() {
+        return this.scaleZ(-1);
+    }
+
+    toSpherical() {
+        var v = new Vector3DSpherical();
+
+        v.r = this.m;
+        v.theta = atan(this.y / this.x);
+        v.phi = acos(this.z / this.m);
+
+        return v;
+    }
+}
+
 class Vector3DSpherical {
     constructor(r = 0, theta = 0, phi = 0) {
         this.r = r;
@@ -193,5 +323,15 @@ class Vector3DSpherical {
 
     get u() {
         return this.unitVector;
+    }
+
+    toCartesian() {
+        var v = new Vector3D();
+
+        v.x = this.r * sin(this.theta) * cos(this.phi);
+        v.y = this.r * sin(this.theta) * sin(this.phi);
+        v.z = this.r * cos(this.theta);
+
+        return v;
     }
 }
