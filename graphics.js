@@ -123,6 +123,72 @@ class GraphicsContext {
     }
 }
 
+n = 0;
+
+class GraphicsContext3D {
+    constructor(context, width, height) {
+        this.context = context;
+
+        this.width = width;
+        this.height = height;
+
+        this.fieldOfView = 720;
+        this.cameraPosition   = new Vector3DSpherical(150, 90, 0);
+        this.cameraDirection  = new Vector3DSpherical(1, 90, 90);
+    }
+
+    clear(width, height, fillColour = "white") {
+        this.context.fillStyle = fillColour;
+        this.context.fillRect(0, 0, width, height);
+    }
+
+    projectVertex(vertex) {
+        var v1 = vertex.subtract(this.cameraPosition.toCartesian());
+        var v2 = v1.toSpherical().rotate( this.cameraDirection.theta, this.cameraDirection.phi);
+        var w = (this.width > this.height) ? this.width : this.height;
+        var x = w * (v2.phi / this.fieldOfView) ;
+        var y = w * ((v2.theta - 90) / this.fieldOfView) ;
+
+        return new Vector2D(x, y);
+    }
+
+    drawPath(vertices, fillColour = "none", lineColour = "black", lineWidth = 1, lineDashStyle = []) {
+        if (vertices == undefined || vertices.length < 2) {
+            return;
+        }
+
+        var projectedVertices = vertices.map(v => this.projectVertex(v));
+
+        if (n == 0){
+          console.log(projectedVertices);
+        n ++;
+        }
+
+        this.context.fillStyle = fillColour;
+
+        this.context.strokeStyle = lineColour;
+        this.context.lineWidth = lineWidth;
+        this.context.setLineDash(lineDashStyle);
+
+        this.context.beginPath();
+        this.context.moveTo(projectedVertices[0].x, projectedVertices[0].y);
+
+        for (let pv of projectedVertices) {
+            this.context.lineTo(pv.x, pv.y);
+        }
+
+        if (lineColour != "none") {
+            this.context.stroke();
+        }
+
+        if (fillColour != "none") {
+            this.context.fill();
+        }
+
+        this.context.setLineDash([]);
+    }
+}
+
 
 
 

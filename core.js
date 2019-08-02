@@ -9,8 +9,20 @@ window.addEventListener("keyup", function (e) {
     app.keyUp(e);
 });
 
+window.addEventListener("mousedown", function (e) {
+    app.mouseDown(e);
+});
+
+window.addEventListener("mousemove", function (e) {
+    app.mouseMove(e);
+});
+
+window.addEventListener("mouseup", function (e) {
+    app.mouseUp(e);
+});
+
 window.addEventListener("resize", function (e) {
-    app.resize(e);
+  //  app.resize(e);
 });
 
 function startApp() {
@@ -32,7 +44,7 @@ function appLoop(timestamp) {
 
     lastFrameTimestamp = timestamp;
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(appLoop);
 }
 
-window.addEventListener("DOMContentLoaded", startGame);
+window.addEventListener("DOMContentLoaded", startApp);

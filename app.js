@@ -26,14 +26,56 @@ class App {
         this.context.scale(this.resolutionFactor, this.resolutionFactor);
         this.context.imageSmoothingQuality = "high";
 
-        this.graphics = new GraphicsContext(this.context);
+        this.graphics = new GraphicsContext3D(this.context, this.canvas.width, this.canvas.height);
+
+        var globe = new Globe(new Vector3D(0, 0, 0), 100);
+
+        this.entities.push(globe);
     }
 
     update(timeDelta) {
         this.time += timeDelta;
     }
 
+    mouseDown(e) {
+        var x = e.clientX - this.canvasLeft;
+        var y = e.clientY - this.canvasTop;
+
+        this.isDown = true;
+        this.x = x;
+        this.y = y;
+
+    }
+
+    mouseMove(e) {
+        var x = e.clientX - this.canvasLeft;
+        var y = e.clientY - this.canvasTop;
+
+        if (this.isDown) {
+            var dx = x - this.x;
+            var dy = y - this.y;
+
+
+
+            //  this.graphics.cameraDirection =     this.graphics.cameraDirection.rotate(dy / 10, dx / 10);
+            this.graphics.cameraPosition = this.graphics.cameraPosition.rotate(-dy / 10, -dx / 10);
+            this.graphics.cameraDirection = this.graphics.cameraDirection.rotate(dy / 10, dx / 10);
+
+            this.x = x;
+            this.y = y;
+
+            console.log(this.graphics.cameraDirection);
+        }
+    }
+
+    mouseUp(e) {
+
+        this.isDown = false;
+    }
+
     keyDown(e) {
+
+
     }
 
     keyUp(e) {

@@ -325,6 +325,16 @@ class Vector3DSpherical {
         return this.unitVector;
     }
 
+    rotate(dtheta = 0, dphi = 0) {
+        var v = new Vector3DSpherical();
+
+        v.r = this.r;
+        v.theta = this.theta + dtheta;
+        v.phi = this.phi + dphi;
+
+        return v;
+    }
+
     toCartesian() {
         var v = new Vector3D();
 
