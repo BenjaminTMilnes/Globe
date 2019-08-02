@@ -171,3 +171,27 @@ function toRadians(degrees) {
 function toDegrees(radians) {
     return (radians / (2 * Math.PI)) * 360;
 }
+
+class Vector3DSpherical {
+    constructor(r = 0, theta = 0, phi = 0) {
+        this.r = r;
+        this.theta = theta;
+        this.phi = phi;
+    }
+
+    get magnitude() {
+        return this.r;
+    }
+
+    get m() {
+        return this.magnitude;
+    }
+
+    get unitVector() {
+        return new Vector3DSpherical(1, this.theta, this.phi);
+    }
+
+    get u() {
+        return this.unitVector;
+    }
+}
