@@ -1,0 +1,38 @@
+var app = new App("appCanvas");
+var lastFrameTimestamp = 0;
+
+window.addEventListener("keydown", function (e) {
+    app.keyDown(e);
+});
+
+window.addEventListener("keyup", function (e) {
+    app.keyUp(e);
+});
+
+window.addEventListener("resize", function (e) {
+    app.resize(e);
+});
+
+function startApp() {
+    app.initialise();
+
+    requestAnimationFrame(appLoop);
+}
+
+function appLoop(timestamp) {
+    var timeDelta = timestamp - lastFrameTimestamp;
+
+    if (timeDelta < 10) {
+        requestAnimationFrame(appLoop);
+        return;
+    }
+
+    app.update(timeDelta);
+    app.draw();
+
+    lastFrameTimestamp = timestamp;
+
+    requestAnimationFrame(gameLoop);
+}
+
+window.addEventListener("DOMContentLoaded", startGame);
