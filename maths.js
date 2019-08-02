@@ -295,8 +295,8 @@ class Vector3D {
         var v = new Vector3DSpherical();
 
         v.r = this.m;
-        v.theta = atan(this.y / this.x);
-        v.phi = acos(this.z / this.m);
+        v.theta = acos(this.z / this.m);
+        v.phi = atan(this.y / this.x);
 
         return v;
     }

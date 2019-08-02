@@ -22,6 +22,14 @@ class Globe {
         return this.centre.add((new Vector3DSpherical(this.radius, 90, 180).toCartesian()));
     }
 
+    get front() {
+        return this.centre.add((new Vector3DSpherical(this.radius, 90, 90).toCartesian()));
+    }
+
+    get rear() {
+        return this.centre.add((new Vector3DSpherical(this.radius, 90, 270).toCartesian()));
+    }
+
     getLatitudeCircle(theta) {
         var p = [];
 
@@ -57,19 +65,20 @@ class Globe {
     }
 
     draw(graphics) {
-        for (var i = 10; i < 180; i += 10) {
+        for (var i = 10; i < 180; i += 20) {
             var p = this.getLatitudeCircle(i);
 
-            graphics.drawPath(p);
+            graphics.drawPath(p , "none", "grey");
         }
 
-        for (var i = 0; i <= 90; i += 30) {
+        for (var i = -90; i < 90; i += 30) {
             var p = this.getLongitudeCircle(i);
 
-            graphics.drawPath(p);
+            graphics.drawPath(p, "none", "grey");
         }
 
-        graphics.drawPath([this.top, this.bottom]);
-        graphics.drawPath([this.left, this.right]);
+        graphics.drawPath([this.top, this.bottom], "none", "red");
+        graphics.drawPath([this.left, this.right], "none", "green");
+        graphics.drawPath([this.front, this.rear], "none", "blue");
     }
 }

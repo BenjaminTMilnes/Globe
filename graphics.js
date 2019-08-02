@@ -132,9 +132,9 @@ class GraphicsContext3D {
         this.width = width;
         this.height = height;
 
-        this.fieldOfView = 720;
-        this.cameraPosition   = new Vector3DSpherical(150, 90, 0);
-        this.cameraDirection  = new Vector3DSpherical(1, 90, 90);
+        this.fieldOfView = 72;
+        this.cameraPosition = new Vector3DSpherical(200, 90, 0);
+        this.cameraDirection = new Vector3DSpherical(1, 90, 180);
     }
 
     clear(width, height, fillColour = "white") {
@@ -144,10 +144,15 @@ class GraphicsContext3D {
 
     projectVertex(vertex) {
         var v1 = vertex.subtract(this.cameraPosition.toCartesian());
-        var v2 = v1.toSpherical().rotate( this.cameraDirection.theta, this.cameraDirection.phi);
+        var v2 = v1.toSpherical().rotate(-90, 0);
+
+        if (n == 0){
+              console.log(v2);
+        }
+
         var w = (this.width > this.height) ? this.width : this.height;
-        var x = w * (v2.phi / this.fieldOfView) ;
-        var y = w * ((v2.theta - 90) / this.fieldOfView) ;
+        var x = w * ((v2.phi ) / this.fieldOfView);
+        var y = w * ((v2.theta ) / this.fieldOfView) - (w - this.height) / 2;
 
         return new Vector2D(x, y);
     }
@@ -159,9 +164,9 @@ class GraphicsContext3D {
 
         var projectedVertices = vertices.map(v => this.projectVertex(v));
 
-        if (n == 0){
-          console.log(projectedVertices);
-        n ++;
+        if (n == 0) {
+            console.log(projectedVertices);
+            n++;
         }
 
         this.context.fillStyle = fillColour;
