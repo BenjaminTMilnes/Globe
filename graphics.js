@@ -8,8 +8,8 @@ class GraphicsContext3D {
         this.height = height;
 
         this.fieldOfView = 72;
-        this.cameraPosition = new Vector3DSpherical(200, 90, 0);
-        this.cameraDirection = new Vector3DSpherical(1, 90, 180);
+        this.cameraPosition = v3(-30, 0, 0);
+        this.cameraDirection = v3(0,90, 180);
  }
 
     clear(width, height, fillColour = "white") {
@@ -22,7 +22,7 @@ class GraphicsContext3D {
             return;
         }
 
-        var projectedVertices = vertices.map(v => perspectiveProjectPoint(v, v3(10, 0, 0), v3(70, 10, 0), v3(0, 0, 3)));
+        var projectedVertices = vertices.map(v => perspectiveProjectPoint(v,  this.cameraPosition, this.cameraDirection, v3(this.width/4, this.height/4, 400)));
 
         this.context.fillStyle = fillColour;
 

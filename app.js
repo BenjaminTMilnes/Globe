@@ -41,8 +41,8 @@ class App extends Application {
             var dx = ((x - this.x) / this.canvas.width) * this.graphics.fieldOfView * 2;
             var dy = ((y - this.y) / this.canvas.height) * this.graphics.fieldOfView * 2;
 
-            this.graphics.cameraPosition = this.graphics.cameraPosition.rotate(-dy, dx);
-            this.graphics.cameraDirection = (new Vector3D(0, 0, 0)).subtract(this.graphics.cameraPosition.toCartesian()).toSpherical();
+         //   this.graphics.cameraPosition = this.graphics.cameraPosition.rotate(-dy, dx);
+            this.graphics.cameraDirection = this.graphics.cameraDirection.add(v3(2 *dy, 0, 2 *dx));
 
             this.x = x;
             this.y = y;
