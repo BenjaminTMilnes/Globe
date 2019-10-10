@@ -8,8 +8,11 @@ class GraphicsContext3D {
         this.height = height;
 
         this.fieldOfView = 72;
-        this.cameraPosition = v3(-30, 0, 0);
+        this.cameraPosition = v3(0,0,0);
         this.cameraDirection = v3(0,90, 180);
+
+            this.alpha = 90;
+            this.beta = 0;
  }
 
     clear(width, height, fillColour = "white") {
@@ -22,7 +25,9 @@ class GraphicsContext3D {
             return;
         }
 
-        var projectedVertices = vertices.map(v => perspectiveProjectPoint(v,  this.cameraPosition, this.cameraDirection, v3(this.width/4, this.height/4, 400)));
+        this.isometricProjectionMatrix = isometricProjectionMatrix(this.alpha, this.beta);
+
+        var projectedVertices = vertices.map(v => this.isometricProjectionMatrix.timesVector(v).add(v2( this.width / 4, this.height / 4)));
 
         this.context.fillStyle = fillColour;
 

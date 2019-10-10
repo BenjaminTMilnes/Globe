@@ -15,7 +15,9 @@ class App extends Application {
         this.graphics2D = new GraphicsContext(this.context);
         this.graphics = new GraphicsContext3D(this.context, this.canvas.width, this.canvas.height);
 
-        var globe = new Globe(new Vector3D(0, 0, 0), 10);
+        var globe = new Globe(new Vector3D(0, 0, 0), 100);
+
+        this.globe = globe;
 
         this.entities.push(globe);
     }
@@ -41,8 +43,8 @@ class App extends Application {
             var dx = ((x - this.x) / this.canvas.width) * this.graphics.fieldOfView * 2;
             var dy = ((y - this.y) / this.canvas.height) * this.graphics.fieldOfView * 2;
 
-         //   this.graphics.cameraPosition = this.graphics.cameraPosition.rotate(-dy, dx);
-            this.graphics.cameraDirection = this.graphics.cameraDirection.add(v3(2 *dy, 0, 2 *dx));
+            this.graphics.alpha += 2 * dy;
+            this.globe.phiOffset += 5 * dx;
 
             this.x = x;
             this.y = y;
@@ -54,6 +56,10 @@ class App extends Application {
     }
 
     scroll(e) {
+
+           this.globe.radius += - e.deltaY / 10;
+
+           e.preventDefault();
     }
 
     keyDown(e) {
