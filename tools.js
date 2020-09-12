@@ -51,7 +51,7 @@ class PencilTool extends Tool {
         this.alpha = 90;
         this.beta = 0;
 
-        this.isometricProjectionMatrix = isometricProjectionMatrix(this.alpha, this.beta);
+        this.isometricProjectionMatrix = basicIsometricProjectionMatrix(this.alpha);
     }
 
     getPointOnGlobe(x, y) {
@@ -62,13 +62,19 @@ class PencilTool extends Tool {
         var r = Math.sqrt(Math.pow(x - onScreenGlobeCentre.x, 2) + Math.pow(y - onScreenGlobeCentre.y, 2));
 
         if (r < onScreenGlobeRadius) {
-            var theta1 = acos((y - onScreenGlobeCentre.y) / onScreenGlobeRadius);
-            var phi1 = acos((x - onScreenGlobeCentre.x) / onScreenGlobeRadius) - this.app.globe.phiOffset;
+            var z = - Math.sqrt(Math.pow(this.app.globe.radius, 2) - Math.pow(r, 2));
+            var va = v3((x - onScreenGlobeCentre.x), (y - onScreenGlobeCentre.y), z);
+var m = inverseBasicIsometricProjectionMatrix(this.app.graphics.alpha);
+ var vb = m.timesVector(va);
+ var vc = vb.subtract(this.app.globe.centre);
+ var vd = Vector3DSpherical.fromCartesian(vc).rotate(0, - this.app.globe.phiOffset);
 
-            console.log(x);
+    //        var theta1 = acos((y - onScreenGlobeCentre.y) / onScreenGlobeRadius);
+      //      var phi1 = acos( / onScreenGlobeRadius) - this.app.globe.phiOffset;
 
-            return new Vector3DSpherical(this.app.globe.radius, theta1, phi1);
+       //     return new Vector3DSpherical(this.app.globe.radius, theta1, phi1);
 
+         return vd;
         }
         else {
             return null;
@@ -96,7 +102,6 @@ class PencilTool extends Tool {
 
             if (p !== null) {
                 this.currentPath.push(p);
-                console.log(this.app.globe);
             }
         }
     }

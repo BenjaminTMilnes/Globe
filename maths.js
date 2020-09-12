@@ -1,4 +1,12 @@
 
+function basicIsometricProjectionMatrix(alpha){
+    return  new Matrix3D(1, 0, 0, 0, cos(alpha), sin(alpha), 0, -sin(alpha), cos(alpha));
+}
+
+function inverseBasicIsometricProjectionMatrix(alpha){
+    return  new Matrix3D(1, 0, 0, 0, cos(alpha), - sin(alpha), 0, sin(alpha), cos(alpha));
+}
+
 class Vector3DSpherical {
     constructor(r = 0, theta = 0, phi = 0) {
         this.r = r; // radius, r >= 0

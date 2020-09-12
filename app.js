@@ -61,7 +61,6 @@ class App extends Application {
            this.graphics.alpha +=  e.deltaY / 5;
            this.globe.phiOffset +=  e.deltaX / 5;
 
-           e.preventDefault();
     }
 
     keyDown(e) {
