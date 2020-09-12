@@ -7,6 +7,8 @@ class Globe {
 
         this.phiOffset = 0;
         this.thetaOffset = 0;
+
+        this.paths = [];
  }
 
     get top() {
@@ -83,5 +85,9 @@ class Globe {
         graphics.drawPath([this.left, this.right], "none", "hsla(350, 80%, 60%)");
         graphics.drawPath([this.front, this.rear], "none", "hsla(110, 80%, 60%)");
         graphics.drawPath([this.top, this.bottom], "none", "hsla(220, 80%, 60%)");
+
+        this.paths.forEach(p => {
+            graphics.drawPath(p.map(v => v.rotate(0, this.phiOffset).toCartesian()), "none", "magenta");
+        });
     }
 }

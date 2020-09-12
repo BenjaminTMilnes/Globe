@@ -4,6 +4,7 @@ class App extends Application {
 
         this.resolutionFactor = 2;
 
+        this.toolSet = new ToolSet(this);
         this.entities = [];
 
         this.time = 0;
@@ -15,7 +16,7 @@ class App extends Application {
         this.graphics2D = new GraphicsContext(this.context);
         this.graphics = new GraphicsContext3D(this.context, this.canvas.width, this.canvas.height);
 
-        var globe = new Globe(new Vector3D(0, 0, 0), 100);
+        var globe = new Globe(new Vector3D(0, 0, 0), 300);
 
         this.globe = globe;
 
@@ -24,6 +25,8 @@ class App extends Application {
 
     update(timeDelta) {
         super.update(timeDelta);
+
+        this.toolSet.update(this.time, timeDelta);
     }
 
     mouseDown(e) {
@@ -31,33 +34,32 @@ class App extends Application {
         var y = e.clientY - this.canvasTop;
 
         this.isDown = true;
-        this.x = x;
-        this.y = y;
+
+        this.toolSet.mouseDown({"x":x, "y":y, "e":e});
+    
     }
 
     mouseMove(e) {
         var x = e.clientX - this.canvasLeft;
         var y = e.clientY - this.canvasTop;
 
-        if (this.isDown) {
-            var dx = ((x - this.x) / this.canvas.width) * this.graphics.fieldOfView * 2;
-            var dy = ((y - this.y) / this.canvas.height) * this.graphics.fieldOfView * 2;
-
-            this.graphics.alpha += 2 * dy;
-            this.globe.phiOffset += 5 * dx;
-
-            this.x = x;
-            this.y = y;
-        }
+        this.toolSet.mouseMove({"x":x, "y":y, "e":e});
+      
     }
 
     mouseUp(e) {
+        var x = e.clientX - this.canvasLeft;
+        var y = e.clientY - this.canvasTop;
+
         this.isDown = false;
+
+        this.toolSet.mouseUp({"x":x, "y":y, "e":e});
     }
 
     scroll(e) {
 
-           this.globe.radius += - e.deltaY / 10;
+           this.graphics.alpha +=  e.deltaY / 5;
+           this.globe.phiOffset +=  e.deltaX / 5;
 
            e.preventDefault();
     }
