@@ -20,19 +20,19 @@ class Globe {
     }
 
     get left() {
-        return this.centre.add((new Vector3DSpherical(this.radius, 90, 0 + this.phiOffset).toCartesian()));
+        return this.centre.add((new Vector3DSpherical(this.radius, 90, 270 + this.phiOffset).toCartesian()));
     }
 
     get right() {
-        return this.centre.add((new Vector3DSpherical(this.radius, 90, 180 + this.phiOffset).toCartesian()));
-    }
-
-    get front() {
         return this.centre.add((new Vector3DSpherical(this.radius, 90, 90 + this.phiOffset).toCartesian()));
     }
 
+    get front() {
+        return this.centre.add((new Vector3DSpherical(this.radius, 90, 0 + this.phiOffset).toCartesian()));
+    }
+
     get rear() {
-        return this.centre.add((new Vector3DSpherical(this.radius, 90, 270 + this.phiOffset).toCartesian()));
+        return this.centre.add((new Vector3DSpherical(this.radius, 90, 180 + this.phiOffset).toCartesian()));
     }
 
     getLatitudeCircle(theta) {
@@ -41,7 +41,7 @@ class Globe {
         var dphi = 5;
 
         for (var i = 0; i <= 360; i += dphi) {
-            var p1 = new Vector3DSpherical(this.radius, theta, i + this.phiOffset);
+            var p1 = new Vector3DSpherical(this.radius, theta, i);
 
             p1 = p1.toCartesian();
             p1 = p1.add(this.centre);
@@ -57,8 +57,8 @@ class Globe {
 
         var dtheta = 5;
 
-        for (var i = -180; i <= 180; i += dtheta) {
-            var p1 = new Vector3DSpherical(this.radius, i, phi + this.phiOffset);
+        for (var i = 0; i <= 180; i += dtheta) {
+            var p1 = new Vector3DSpherical(this.radius, i, phi);
 
             p1 = p1.toCartesian();
             p1 = p1.add(this.centre);
@@ -76,7 +76,7 @@ class Globe {
             graphics.drawPath(p, "none", "grey");
         }
 
-        for (var i = -90; i < 90; i += 10) {
+        for (var i = 0; i < 360; i += 10) {
             var p = this.getLongitudeCircle(i);
 
             graphics.drawPath(p, "none", "grey");
