@@ -60,7 +60,7 @@ class Vector3DSpherical {
         // By this point, phi may be above 360, so cut it down by multiples of 360.
         phi = phi % 360;
 
-        return new Vector3DSpherical(r, phi, theta);
+        return new Vector3DSpherical(r, theta, phi);
     }
 
     add(vector) {
@@ -89,10 +89,10 @@ class Vector3DSpherical {
 
     static fromCartesian(vector) {
         var r = vector.m;
-        var phi = v2(vector.x, vector.y).a;
         var theta = (r == 0) ? 0 : acos(vector.z / r);
+        var phi = v2(vector.x, vector.y).a;
 
-        return (new Vector3DSpherical(r, phi, theta)).normalise();
+        return (new Vector3DSpherical(r, theta, phi)).normalise();
     }
 
     toCartesian() {

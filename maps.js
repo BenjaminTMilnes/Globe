@@ -58,7 +58,7 @@ class Globe {
         var dtheta = 5;
 
         for (var i = 0; i <= 180; i += dtheta) {
-            var p1 = new Vector3DSpherical(this.radius, i, phi);
+            var p1 = new Vector3DSpherical(this.radius, i, phi + this.phiOffset);
 
             p1 = p1.toCartesian();
             p1 = p1.add(this.centre);
